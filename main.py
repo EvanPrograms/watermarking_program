@@ -1,15 +1,11 @@
 # Watermarking App
 
 from tkinter import *
-from PIL import ImageTk, Image, ImageFont, ImageDraw
+from PIL import ImageTk, Image
 from tkinter import filedialog
-from tkinter.filedialog import askopenfile
-import matplotlib.pyplot as plt
-import numpy as np
 
 logo_path = None
 image_path = None
-
 
 window = Tk()
 window.title("Watermarking App")
@@ -23,12 +19,14 @@ label.grid(row=0, column=0)
 # Global creation value, so we can re-use the program and delete it when a new selection is made
 creation = Label(text='PLACEHOLDER')
 error = Label(text="")
+
+
 def watermark(background, logo):
     global creation
     global error
     try:
-        background_img = Image.open(image_path)
-        logo_img = Image.open(logo_path)
+        background_img = Image.open(background)
+        logo_img = Image.open(logo)
 
         logo_width, logo_height = logo_img.size
         background_width, background_height = background_img.size
@@ -48,7 +46,6 @@ def watermark(background, logo):
         creation = Label(window, image=photo)
         creation.image = photo
         creation.grid(row=4, column=0)
-        return;
     except AttributeError:
         error.destroy()
         print("Please select a valid background and logo")
@@ -60,6 +57,7 @@ def watermark(background, logo):
 def upload_file():
     global image_path
     image_path = filedialog.askopenfilename()
+
 
 # Selects the logo image, will provide error if unusable watermark or none selected
 def upload_watermark():
@@ -83,14 +81,11 @@ def upload_watermark():
         logo_path = None
 
 
-
-
-
 # If the watermarking program was used, this will clear the previous image
 def clear_image():
     global creation
     creation.destroy()
-    return;
+
 
 # Selects a background photo
 button1 = Button(text="Select Photo", command=upload_file)
@@ -105,3 +100,4 @@ button3 = Button(text="Show watermark", command=lambda: [clear_image(), watermar
 button3.grid(row=3, column=0)
 
 window.mainloop()
+
